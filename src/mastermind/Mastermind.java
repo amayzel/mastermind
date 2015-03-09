@@ -142,13 +142,14 @@ public class Mastermind extends JFrame{
 	
 	public boolean enableSideButtons(){
 		if(mainButtons[turn][0].getBackground().equals(Color.LIGHT_GRAY)
-			&&	mainButtons[turn][1].getBackground().equals(Color.LIGHT_GRAY)
-			&&	mainButtons[turn][2].getBackground().equals(Color.LIGHT_GRAY)
-			&&	mainButtons[turn][3].getBackground().equals(Color.LIGHT_GRAY)){
+			||	mainButtons[turn][1].getBackground().equals(Color.LIGHT_GRAY)
+			||	mainButtons[turn][2].getBackground().equals(Color.LIGHT_GRAY)
+			||	mainButtons[turn][3].getBackground().equals(Color.LIGHT_GRAY)){
 			 
+			return false;
 			
 		}
-		return false;
+		return true;
 	}
 	
 	public void checkGuess(){
