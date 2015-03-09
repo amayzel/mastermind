@@ -134,8 +134,15 @@ public class Mastermind extends JFrame{
 	}
 	
 	public void enableNextRow(){
-		
-		for(int i = 0; i < 4; i++){
+		for(int i = 0; i < 5; i++){
+			mainButtons[turn][i].setEnabled(true);
+		}
+		for(int i = 0; i < mainButtons.length; i++){
+			if(i != turn){
+				for(int j = 0; j < mainButtons[i].length; i++){
+					mainButtons[i][j].setEnabled(false);
+				}
+			}
 			
 		}
 	}
