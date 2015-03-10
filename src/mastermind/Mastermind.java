@@ -36,13 +36,11 @@ public class Mastermind extends JFrame{
 	private Random r = new Random();
 	private int[] key = new int[numPegs];
 	private int[] guess = new int[numPegs];
-	private int[][] paintingSpots;
-
 	private int turn = 0;
 
 	private int whitePegs = 0;
 	private int blackPegs = 0;
-
+	private int temp;
 
 	public Mastermind() {
 		setSize(400, 600);
@@ -125,6 +123,8 @@ public class Mastermind extends JFrame{
 			public void actionPerformed(ActionEvent event) {
 				if (event.getSource().equals(doneButton)) {
 					checkGuess();
+					temp = blackPegs;
+					paintSideButtons();
 					turn++;
 					for (int i = 0; i < ROWS; i++) {
 						for (int j = 0; j < COLS; j++) {
@@ -135,11 +135,12 @@ public class Mastermind extends JFrame{
 							}
 						}
 					}
-					paintSideButtons();
-					if(lost()){
+					
+					if(lost() || turn == 10){
 						JOptionPane.showMessageDialog(null, "YOU LOST!!!");
 					}
-					else if(won()){
+					if(won() || temp == 4){
+						disableAll();
 						JOptionPane.showMessageDialog(null, "YOU WON!!!");
 					}
 					else{
@@ -284,16 +285,21 @@ public class Mastermind extends JFrame{
 		
 	}
 	
-	/*public void disableDoneButton(){
-		if(mainButtons[turn][0].getBackground().equals(Color.LIGHT_GRAY)
-				||	mainButtons[turn][1].getBackground().equals(Color.LIGHT_GRAY)
-				||	mainButtons[turn][2].getBackground().equals(Color.LIGHT_GRAY)
-				||	mainButtons[turn][3].getBackground().equals(Color.LIGHT_GRAY)){
-
-			doneButton.setEnabled(true);
+	public void disableAll(){
+		for(int i = 0; i < mainButtons.length; i++){
+			for(int j = 0; j < mainButtons[i].length; j++){
+				mainButtons[i][j].setEnabled(false);
+			}
+		}
+		for(int i = 0; i < sideButtons.length; i++){
+			for(int j = 0; j < sideButtons[i].length; j++){
+				sideButtons[i][j].setEnabled(false);
+			}
 		}
 		
-	}*/
+		doneButton.setEnabled(false);
+		
+	}
 	
 	public void checkGuess(){
 
@@ -325,7 +331,7 @@ public class Mastermind extends JFrame{
 	}
 	
 	public boolean won(){
-		if(blackPegs == 4){
+		if(temp == 4){
 			return true;
 		}
 		return false;
@@ -338,35 +344,35 @@ public class Mastermind extends JFrame{
 		return false;
 	}
 	
-	//paints correctly but in first spot e round
-	
-
-	
 	public void paintSideButtons(){	
-		paintingSpots = new int[4][2];
-		paintingSpots[0][0] = turn*2; 
-		paintingSpots[0][1] = 0;
-		paintingSpots[1][0] = turn*2; 
-		paintingSpots[1][1] = 1;
-		paintingSpots[2][0] = turn*2+1; 
-		paintingSpots[2][1] = 0;
-		paintingSpots[3][0] = turn*2+1; 
-		paintingSpots[3][1] = 1;
 		
-		for(int i = 0; i < paintingSpots.length; i++){
-			for(int j = 0; j < paintingSpots[i].length; j++){
+		int[] o = new int[2];
+		o[0] = turn*2;
+		o[1] = turn*2+1;
+		
+		/*paintingSpots = new int[4][2];
+		paintingSpots[0][0] = 0; 
+		paintingSpots[0][1] = turn*2;
+		paintingSpots[1][0] = 1; 
+		paintingSpots[1][1] = turn*2;
+		paintingSpots[2][0] = 0; 
+		paintingSpots[2][1] = turn*2+1;
+		paintingSpots[3][0] = 1; 
+		paintingSpots[3][1] = turn*2+1;*/
+		
+		for(int i = 0; i < 4; i++){
+			for(int j = 0; j < 2; j++){
 				if(blackPegs != 0){
-					sideButtons[i][j].setBackground(Color.BLACK);
+					sideButtons[o[i]][j].setBackground(Color.BLACK);
 					blackPegs--;
 				}
 				else if(whitePegs != 0){
-					sideButtons[i][j].setBackground(Color.WHITE);
+					sideButtons[o[i]][j].setBackground(Color.WHITE);
 					whitePegs--;
 				}
 			}			
 		}
 	}
-
 	
 	public static void main(String [] args){
 		Mastermind mm = new Mastermind();
