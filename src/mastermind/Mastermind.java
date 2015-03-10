@@ -143,6 +143,7 @@ public class Mastermind extends JFrame{
 						JOptionPane.showMessageDialog(null, "YOU WON!!!");
 					}
 					else if(lost() || turn == 10){
+						showKey();
 						JOptionPane.showMessageDialog(null, "YOU LOST!!!");
 					}					
 					else{
