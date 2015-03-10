@@ -11,6 +11,7 @@ import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class Mastermind extends JFrame{
@@ -136,13 +137,14 @@ public class Mastermind extends JFrame{
 						}
 					}
 					
-					if(lost() || turn == 10){
-						JOptionPane.showMessageDialog(null, "YOU LOST!!!");
-					}
 					if(won() || temp == 4){
 						disableAll();
+						showKey();
 						JOptionPane.showMessageDialog(null, "YOU WON!!!");
 					}
+					else if(lost() || turn == 10){
+						JOptionPane.showMessageDialog(null, "YOU LOST!!!");
+					}					
 					else{
 						doneButton.setEnabled(false);
 					}
@@ -169,6 +171,7 @@ public class Mastermind extends JFrame{
 		}
 
 		
+		
 
 		for(int i = 0; i < ROWS; i++){
 			for(int j = 0; j < COLS; j++){
@@ -187,12 +190,16 @@ public class Mastermind extends JFrame{
 		generateKey();
 		
 		for(int i = 0; i < keyButtons.length; i++){
+			
 			keyButtons[i] = new JButton();
-			//change the color to grey
-			keyButtons[i].setBackground(numToColor(key[i]));
+			keyButtons[i].setBackground(Color.LIGHT_GRAY);
 			keyButtons[i].setEnabled(false);
 			southCenter.add(keyButtons[i]);
+			if(i == keyButtons.length-1)
+				printOutKey();
 		}
+		
+		southWest.add(new JLabel("ANSWER KEY: "));
 
 
 		enableNextRow();
@@ -211,6 +218,32 @@ public class Mastermind extends JFrame{
 	public void showKey(){
 		for(int i = 0; i < key.length; i++){
 			keyButtons[i].setBackground(numToColor(key[i])); 
+		}
+	}
+	
+	public void printOutKey(){
+		showKey();
+		System.out.println("This is the answer: ");
+		for(int i = 0; i < key.length; i++){
+			if(keyButtons[i].getBackground().equals(PINK)){
+				System.out.println("PINK"); 
+			}
+			if(keyButtons[i].getBackground().equals(ORANGE)){
+				System.out.println("ORANGE"); 
+			}
+			if(keyButtons[i].getBackground().equals(YELLOW)){
+				System.out.println("YELLOW"); 
+			}
+			if(keyButtons[i].getBackground().equals(GREEN)){
+				System.out.println("GREEN"); 
+			}
+			if(keyButtons[i].getBackground().equals(BLUE)){
+				System.out.println("BLUE"); 
+			}
+			if(keyButtons[i].getBackground().equals(WHITE)){
+				System.out.println("WHITE"); 
+			}
+			keyButtons[i].setBackground(Color.LIGHT_GRAY);
 		}
 	}
 	
