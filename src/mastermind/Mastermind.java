@@ -61,7 +61,7 @@ public class Mastermind extends JFrame{
 		Container south  = new Container();
 
 		board.setLayout(new BorderLayout());
-		board.setBackground(Color.BLUE);
+		board.setBackground(Color.WHITE);
 
 		center.setLayout(new BorderLayout());
 		south.setLayout(new BorderLayout());
@@ -198,9 +198,9 @@ public class Mastermind extends JFrame{
 			if(i == keyButtons.length-1)
 				printOutKey();
 		}
-		
+		//southWest.setForeground(Color.WHITE);
 		southWest.add(new JLabel("ANSWER KEY: "));
-
+		
 
 		enableNextRow();
 
