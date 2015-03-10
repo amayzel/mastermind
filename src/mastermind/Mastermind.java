@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -38,8 +39,8 @@ public class Mastermind extends JFrame{
 	private int[] guess = new int[numPegs];
 	private int[][] paintingSpots;
 
-	private int turn = 0;
-
+	private int turn;
+	
 	private int whitePegs = 0;
 	private int blackPegs = 0;
 
@@ -69,7 +70,7 @@ public class Mastermind extends JFrame{
 		
 		centerCenter.setLayout(new GridLayout(ROWS, COLS));
 		centerEast.setLayout(new GridLayout(ROWS*2, COLS/2));
-		southCenter.setLayout(new GridLayout(4,4));
+		southCenter.setLayout(new GridLayout(1,4));
 		southWest.setLayout(new GridLayout(2,2));
 		
 		center.add(centerCenter, BorderLayout.CENTER);
@@ -82,10 +83,7 @@ public class Mastermind extends JFrame{
 		board.add(east, BorderLayout.EAST);
 		board.add(west, BorderLayout.WEST);
 		board.add(north, BorderLayout.NORTH);
-		board.add(south, BorderLayout.SOUTH);
-
-		
-		
+		board.add(south, BorderLayout.SOUTH);		
 		
 		ActionListener mainPegListener = new ActionListener() {
 			@Override
@@ -125,14 +123,27 @@ public class Mastermind extends JFrame{
 		ActionListener doneListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
+				
 				if (event.getSource().equals(doneButton)) {
 					checkGuess();
-					turn++;
-					if(won() == false){
-						paintSideButtons();
+					for (int i = 0; i < ROWS; i++) {
+						for (int j = 0; j < COLS; j++) {
+							if (i == turn) {
+								mainButtons[i][j].setEnabled(true);
+							} else {
+								mainButtons[i][j].setEnabled(false);
+							}
+						}
 					}
-					else{
-						JOptionPane.showMessageDialog(null, "YOU WON!!!");
+					paintSideButtons(turn++);
+					if(won()){
+						int k = JOptionPane.showOptionDialog(null, "YOU WON!!!\nNew Game?", "YAY!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.OK_OPTION, null, null, null);
+						if(k == JOptionPane.OK_OPTION){
+						    //new game
+						}
+						else{
+							//this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+						}
 					}
 				}
 			}
@@ -161,6 +172,11 @@ public class Mastermind extends JFrame{
 				mainButtons[i][j] = new JButton();
 				mainButtons[i][j].setBackground(Color.LIGHT_GRAY);
 				mainButtons[i][j].addActionListener(mainPegListener);
+				if (i == turn) {
+					mainButtons[i][j].setEnabled(true);
+				} else {
+					mainButtons[i][j].setEnabled(false);
+				}
 				centerCenter.add(mainButtons[i][j]);
 			}
 		}
@@ -172,7 +188,7 @@ public class Mastermind extends JFrame{
 			//change the color to grey
 			keyButtons[i].setBackground(numToColor(key[i]));
 			keyButtons[i].setEnabled(false);
-			south.add(keyButtons[i]);
+			southCenter.add(keyButtons[i]);
 		}
 
 
@@ -257,7 +273,6 @@ public class Mastermind extends JFrame{
 
 		}
 	}
-
 	
 	public void enableDoneButton(){
 		if(!mainButtons[turn][0].getBackground().equals(Color.LIGHT_GRAY)
@@ -306,7 +321,7 @@ public class Mastermind extends JFrame{
 		return false;
 	}
 
-	public void paintSideButtons(){		
+	public void paintSideButtons(int turn){		
 		paintingSpots = new int[4][2];
 		paintingSpots[0][0] = turn*2; 
 		paintingSpots[0][1] = 0;
@@ -330,8 +345,8 @@ public class Mastermind extends JFrame{
 			}			
 		}
 	}
-
 	
+
 	public static void main(String [] args){
 		Mastermind mm = new Mastermind();
 		mm.setVisible(true);
